@@ -46,4 +46,10 @@ public class ParkingLotService {
         parkingLotDB.get().setCapacity(parkingLot.getCapacity()); // you can only update capacity
         return parkingLotRepository.save(parkingLotDB.get());
     }
+    public ParkingLot saveParkingLot(ParkingLot parkingLot) throws NotSupportedException {
+        Optional<ParkingLot> parkingLotDB = Optional.ofNullable(parkingLotRepository.findOneByName(parkingLot.getName()));
+        if(parkingLot.getCapacity() < 1) throw new NotSupportedException(INVALID_CAPACITY);
+        if(parkingLotDB.isPresent()) throw new NotSupportedException(PARKING_NAME_ALREADY_EXISTS);
+        return parkingLotRepository.save(parkingLot);
+    }
 }

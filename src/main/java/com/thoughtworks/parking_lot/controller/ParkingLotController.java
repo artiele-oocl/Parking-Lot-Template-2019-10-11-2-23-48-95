@@ -45,5 +45,10 @@ public class ParkingLotController {
             throws NotFoundException, NotSupportedException {
         return parkingLotService.updateParkingLot(parkingLot, name);
     }
+    @ResponseStatus(code = HttpStatus.CREATED)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ParkingLot saveParkingLot(@RequestBody ParkingLot parkingLot) throws NotSupportedException {
+        return parkingLotService.saveParkingLot(parkingLot);
+    }
 
 }
