@@ -21,14 +21,20 @@ public class ParkingLotService {
     public Iterable<ParkingLot> getAllParkingLots(Integer page, Integer pageSize) {
         return parkingLotRepository.findAll();
     }
-    public Optional<ParkingLot> getParkingLotByName(String name) throws NotFoundException {
+    public ParkingLot getParkingLotByName(String name) throws NotFoundException {
         Optional<ParkingLot> parkingLot = Optional.ofNullable(parkingLotRepository.findOneByName(name));
         if(!parkingLot.isPresent()) throw new NotFoundException(PARKING_NOT_FOUND);
-        return parkingLot;
+        return parkingLot.get();
     }
     public List<ParkingLot> getParkingLotByNameLike(String name) throws NotFoundException {
         List<ParkingLot> parkingLot = parkingLotRepository.findByNameContaining(name);
         if(parkingLot.size() == 0) throw new NotFoundException(PARKING_NOT_FOUND);
         return parkingLotRepository.findByNameContaining(name);
+    }
+    public ParkingLot deleteParkingLot(String name) throws NotFoundException {
+        Optional<ParkingLot> parkingLot = Optional.ofNullable(parkingLotRepository.findOneByName(name));
+        if(!parkingLot.isPresent()) throw new NotFoundException(PARKING_NOT_FOUND);
+        parkingLotRepository.delete(parkingLot.get());
+        return parkingLot.get();
     }
 }

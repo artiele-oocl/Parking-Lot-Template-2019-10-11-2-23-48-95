@@ -25,7 +25,7 @@ public class ParkingLotController {
     }
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping(path = "/{name}")
-    public Optional<ParkingLot> getParkingLotByName(@PathVariable String name) throws NotFoundException {
+    public ParkingLot getParkingLotByName(@PathVariable String name) throws NotFoundException {
         return parkingLotService.getParkingLotByName(name);
     }
     @ResponseStatus(code = HttpStatus.OK)
@@ -33,4 +33,10 @@ public class ParkingLotController {
     public List<ParkingLot> getParkingLotByNameLike(@RequestParam(required = false) String name) throws NotFoundException {
         return parkingLotService.getParkingLotByNameLike(name);
     }
+    @ResponseStatus(code = HttpStatus.OK)
+    @DeleteMapping(path = "/{name}")
+    public ParkingLot deleteParkingLot(@PathVariable String name) throws NotFoundException {
+        return parkingLotService.deleteParkingLot(name);
+    }
+
 }
