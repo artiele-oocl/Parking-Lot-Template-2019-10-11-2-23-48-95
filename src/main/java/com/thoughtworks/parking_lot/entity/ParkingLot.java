@@ -1,5 +1,6 @@
 package com.thoughtworks.parking_lot.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -7,7 +8,9 @@ import javax.persistence.Id;
 public class ParkingLot {
     @Id
     private String name;
+    @Column(nullable = false)
     private Integer capacity;
+    @Column(nullable = false)
     private String location;
 
     public ParkingLot() {
