@@ -92,5 +92,16 @@ public class ParkingLotControllerTest {
         resultOfExecution.andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$[0].name", is("myParkingLot")));
     }
 
+    @Test
+    void should_show_one_parking_lot_when_parkinglot_name_is_part_of_query_param() throws Exception {
+        ParkingLot parkingLot = createParkingLot("myParkingLot");
+
+        when(parkingLotService.getParkingLotByName(anyString())).thenReturn(parkingLot);
+
+        ResultActions resultOfExecution = mvc.perform(get("/parkingLots/{name}", "myParkingLot"));
+
+        resultOfExecution.andExpect(status().isOk());
+    }
+
 
 }
