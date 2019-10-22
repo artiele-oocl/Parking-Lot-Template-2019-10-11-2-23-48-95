@@ -14,7 +14,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,7 +45,7 @@ public class ParkingLotControllerTest {
 
     @Test
     void should_save_new_parkinglot_when_capacity_is_greater_than_1_and_parkinglot_is_new() throws Exception {
-        ParkingLot parkingLot = createParkingLot("ParkingLotTest");
+        ParkingLot parkingLot = createParkingLot("myParkingLot");
 
         when(parkingLotService.saveParkingLot(parkingLot)).thenReturn(parkingLot);
 
@@ -54,4 +56,16 @@ public class ParkingLotControllerTest {
 
         resultOfExecution.andExpect(status().isCreated());
     }
+
+    @Test
+    void should_delete_parking_lot_when_parking_lot_name_is_found_in_DB() throws Exception {
+        ParkingLot parkingLot = createParkingLot("myParkingLot");
+
+        when(parkingLotService.deleteParkingLot(anyString())).thenReturn(parkingLot);
+
+        ResultActions resultOfExecution = mvc.perform(delete("/parkingLots/{name}", "myParkingLot"));
+
+        resultOfExecution.andExpect(status().isOk());
+    }
+
 }
