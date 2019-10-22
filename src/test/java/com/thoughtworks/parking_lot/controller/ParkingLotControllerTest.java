@@ -80,12 +80,12 @@ public class ParkingLotControllerTest {
         ParkingLot parkingLot = createParkingLot("myParkingLot");
 
         LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
-        requestParams.add("page", "1");
+        requestParams.add("page", "0");
         requestParams.add("pageSize", "5");
 
         parkingLotList.add(parkingLot);
 
-        when(parkingLotService.getAllParkingLots(anyInt(), anyInt())).thenReturn(parkingLotList);
+        when(parkingLotService.getAllParkingLots(0, 5)).thenReturn(parkingLotList);
 
         ResultActions resultOfExecution = mvc.perform(get("/parkingLots").params(requestParams));
 

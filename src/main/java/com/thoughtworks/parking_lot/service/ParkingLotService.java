@@ -4,6 +4,7 @@ import com.thoughtworks.parking_lot.entity.ParkingLot;
 import com.thoughtworks.parking_lot.repository.ParkingLotRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.NotSupportedException;
@@ -20,6 +21,9 @@ public class ParkingLotService {
     private static final String PARKING_NAME_ALREADY_EXISTS = "PARKING NAME ALREADY EXISTS";
 
     public Iterable<ParkingLot> getAllParkingLots(Integer page, Integer pageSize) {
+        if (page != null && pageSize != null) {
+            return parkingLotRepository.findAll(PageRequest.of(page, pageSize));
+        }
         return parkingLotRepository.findAll();
     }
     public ParkingLot getParkingLotByName(String name) throws NotFoundException {
