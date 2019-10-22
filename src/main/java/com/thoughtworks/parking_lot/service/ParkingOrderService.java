@@ -32,7 +32,7 @@ public class ParkingOrderService {
     private static final String ORDER_NUMBER_ALREADY_CLOSED = "ORDER NUMBER ALREADY CLOSED";
     private static final String ORDER_STATUS_IS_OPEN = "ORDER STATUS IS OPEN";
 
-    public String getCurrentDateTime() {
+    private String getCurrentDateTime() {
         LocalDateTime myDateObj = LocalDateTime.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
         return myDateObj.format(myFormatObj);
