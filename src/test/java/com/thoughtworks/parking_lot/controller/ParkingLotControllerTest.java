@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -89,7 +89,7 @@ public class ParkingLotControllerTest {
 
         ResultActions resultOfExecution = mvc.perform(get("/parkingLots").params(requestParams));
 
-        resultOfExecution.andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$[0].name", is("myParkingLot")));
+        resultOfExecution.andExpect(status().isOk()).andExpect(jsonPath("$[0].name", is("myParkingLot")));
     }
 
     @Test
@@ -103,5 +103,21 @@ public class ParkingLotControllerTest {
         resultOfExecution.andExpect(status().isOk());
     }
 
+    @Test
+    void should_update_parking_lot_capacity_when_capacity_is_updated() throws Exception {
+        ParkingLot parkingLot = createParkingLot("myParkingLot");
+        ParkingLot newParkingLot = createParkingLot("myParkingLot2");
+        newParkingLot.setCapacity(20);
+
+        when(parkingLotService.updateParkingLot(any(), anyString())).thenReturn(newParkingLot);
+
+        ResultActions resultOfExecution = mvc.perform(patch("/parkingLots/{name}", "myParkingLot")
+                .content(objectMapper.writeValueAsString(parkingLot))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        resultOfExecution.andExpect(status().isOk())
+                .andExpect(jsonPath("$.capacity" , is(newParkingLot.getCapacity())));
+    }
 
 }
